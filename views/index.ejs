@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Text Transformer</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <header>
+    <div class="logo">
+      <i class="fas fa-text-height"></i>
+      <h1>Text Transformer</h1>
+    </div>
+  </header>
+  
+  <main class="container">
+    <div class="card">
+      <div class="card-header">
+        <h2>Transform Your Text</h2>
+        <p class="subtitle">Enter your text below and transform it instantly</p>
+      </div>
+      
+      <form action="/transform" method="POST">
+        <div class="form-group">
+          <label for="inputText">Your Text</label>
+          <textarea id="inputText" name="inputText" placeholder="Enter your text here..." required></textarea>
+        </div>
+        
+        <!--
+        <div class="form-group">
+          <label for="transformType">Transform Type</label>
+          <select id="transformType" name="transformType">
+            <option value="uppercase">Uppercase</option>
+            <option value="lowercase">Lowercase</option>
+            <option value="reverse">Reverse</option>
+          </select>
+        </div>
+        -->
+        
+        <button type="submit" class="btn-primary">
+          <i class="fas fa-magic"></i> Transform
+        </button>
+      </form>
+
+      <% if (output !== null) { %>
+        <div class="result-section">
+          <h3>Result:</h3>
+          <div class="result-box">
+            <pre><%= output %></pre>
+            <button class="btn-copy" id="copyButton" title="Copy to clipboard">
+              <i class="fas fa-copy"></i>
+            </button>
+          </div>
+        </div>
+      <% } %>
+    </div>
+  </main>
+  
+  <footer>
+    <p>&copy; <%= new Date().getFullYear() %> Text Transformer. All rights reserved.</p>
+  </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const copyButton = document.getElementById('copyButton');
+      if (copyButton) {
+        copyButton.addEventListener('click', function() {
+          const resultText = document.querySelector('.result-box pre').textContent;
+          navigator.clipboard.writeText(resultText)
+            .then(() => {
+              copyButton.innerHTML = '<i class="fas fa-check"></i>';
+              setTimeout(() => {
+                copyButton.innerHTML = '<i class="fas fa-copy"></i>';
+              }, 2000);
+            })
+            .catch(err => {
+              console.error('Failed to copy text: ', err);
+            });
+        });
+      }
+    });
+  </script>
+</body>
+</html>
