@@ -3,9 +3,11 @@ import bodyParser from "body-parser";
 import path from "path";
 import { fileURLToPath } from "url";
 import cleanText from "./src/fix.js";
+import pkg from "./package.json" with { type: "json" } ;
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const PORT = process.env.PORT || 3000;
+const version = pkg.version;
 
 const app = express();
 
@@ -15,14 +17,13 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use(bodyParser.urlencoded({ extended: false }));
 
 app.get("/", (req, res) => {
-  res.render("index", { output: null });
+  res.render("index", { output: null, version });
 });
 
 app.post("/transform", (req, res) => {
   const { inputText } = req.body;
   const { result } = cleanText(inputText);
-
-  res.render("index", { output: result });
+  res.render("index", { output: result, version });
 });
 
 app.listen(PORT, () => {

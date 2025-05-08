@@ -13,6 +13,11 @@
       <i class="fas fa-text-height"></i>
       <h1>Text Transformer</h1>
     </div>
+    <div class="theme-toggle">
+      <button id="darkModeToggle" class="btn-theme" title="Toggle dark mode">
+        <i class="fas fa-moon"></i>
+      </button>
+    </div>
   </header>
   
   <main class="container">
@@ -60,10 +65,40 @@
   
   <footer>
     <p>&copy; <%= new Date().getFullYear() %> Text Transformer. All rights reserved.</p>
+    <p>Created by <a style="color: var(--primary-color);" href="https://github.com/P-0001">P-0001</a></p>
+    
+    <p>Version: <%= version %></p>
+
   </footer>
 
   <script>
     document.addEventListener('DOMContentLoaded', function() {
+
+      // save last input
+      const lastInput = localStorage.getItem('lastInput');
+      if (lastInput) {
+        document.getElementById('inputText').value = lastInput;
+      }
+
+      // save last output
+      const lastOutput = localStorage.getItem('lastOutput');
+      if (lastOutput) {
+        document.getElementById('outputText').value = lastOutput;
+      }
+
+
+      // save input and output on form submit
+      const form = document.querySelector('form');
+      if (form) {
+        form.addEventListener('submit', function() {
+          const inputText = document.getElementById('inputText').value;
+          const outputText = document.getElementById('outputText').value;
+          localStorage.setItem('lastInput', inputText);
+          localStorage.setItem('lastOutput', outputText);
+        });
+      }
+
+      // Copy button functionality
       const copyButton = document.getElementById('copyButton');
       if (copyButton) {
         copyButton.addEventListener('click', function() {
@@ -80,6 +115,31 @@
             });
         });
       }
+      
+      // Dark mode functionality
+      const darkModeToggle = document.getElementById('darkModeToggle');
+      const htmlElement = document.documentElement;
+      
+      // Check for saved theme preference
+      const savedTheme = localStorage.getItem('theme');
+      if (savedTheme === 'dark') {
+        htmlElement.classList.add('dark-mode');
+        darkModeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+      }
+      
+      // Toggle dark mode
+      darkModeToggle.addEventListener('click', function() {
+        htmlElement.classList.toggle('dark-mode');
+        
+        // Update button icon
+        if (htmlElement.classList.contains('dark-mode')) {
+          darkModeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+          localStorage.setItem('theme', 'dark');
+        } else {
+          darkModeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+          localStorage.setItem('theme', 'light');
+        }
+      });
     });
   </script>
 </body>

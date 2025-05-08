@@ -7,6 +7,25 @@
   --border-radius: 8px;
   --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   --transition: all 0.3s ease;
+  --bg-gradient: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
+  --card-bg: white;
+  --header-bg: white;
+  --card-header-bg: var(--light-gray);
+  --border-color: #eee;
+}
+
+/* Dark mode variables */
+.dark-mode {
+  --primary-color: #6c8cb8;
+  --primary-dark: #5a7ca5;
+  --text-color: #e4e6eb;
+  --light-gray: #2c2f33;
+  --bg-gradient: linear-gradient(135deg, #1a1c20 0%, #2c2f33 100%);
+  --card-bg: #36393f;
+  --header-bg: #2c2f33;
+  --card-header-bg: #2c2f33;
+  --border-color: #444;
+  --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
 * {
@@ -17,18 +36,23 @@
 
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
+  background: var(--bg-gradient);
   color: var(--text-color);
   line-height: 1.6;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  transition: var(--transition);
 }
 
 header {
-  background-color: white;
+  background-color: var(--header-bg);
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: var(--transition);
 }
 
 .logo {
@@ -49,6 +73,31 @@ h1 {
   color: var(--primary-color);
 }
 
+/* Theme toggle button */
+.theme-toggle {
+  display: flex;
+  align-items: center;
+}
+
+.btn-theme {
+  background: transparent;
+  border: none;
+  color: var(--primary-color);
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition);
+}
+
+.btn-theme:hover {
+  background-color: var(--light-gray);
+  transform: rotate(15deg);
+}
+
 main {
   flex: 1;
   padding: 2rem;
@@ -61,20 +110,24 @@ main {
   width: 100%;
   max-width: 800px;
   margin: 0 auto;
+  padding: 0 1rem;
+  box-sizing: border-box;
 }
 
 .card {
-  background: white;
+  background: var(--card-bg);
   border-radius: var(--border-radius);
   box-shadow: var(--box-shadow);
   overflow: hidden;
+  transition: var(--transition);
 }
 
 .card-header {
   padding: 1.5rem;
-  background-color: var(--light-gray);
-  border-bottom: 1px solid #eee;
+  background-color: var(--card-header-bg);
+  border-bottom: 1px solid var(--border-color);
   text-align: center;
+  transition: var(--transition);
 }
 
 h2 {
@@ -84,7 +137,8 @@ h2 {
 }
 
 .subtitle {
-  color: #666;
+  color: var(--text-color);
+  opacity: 0.7;
   font-size: 0.9rem;
 }
 
@@ -100,7 +154,7 @@ label {
   display: block;
   margin-bottom: 0.5rem;
   font-weight: 500;
-  color: #555;
+  color: var(--text-color);
 }
 
 textarea {
@@ -112,6 +166,8 @@ textarea {
   resize: vertical;
   font-family: inherit;
   transition: var(--transition);
+  background-color: var(--card-bg);
+  color: var(--text-color);
 }
 
 textarea:focus {
@@ -125,7 +181,8 @@ select {
   padding: 0.8rem;
   border: 1px solid #ddd;
   border-radius: var(--border-radius);
-  background-color: white;
+  background-color: var(--card-bg);
+  color: var(--text-color);
   font-family: inherit;
   transition: var(--transition);
 }
@@ -155,7 +212,7 @@ select {
 
 .result-section {
   padding: 1.5rem;
-  border-top: 1px solid #eee;
+  border-top: 1px solid var(--border-color);
 }
 
 h3 {
@@ -170,6 +227,7 @@ h3 {
   padding: 1rem;
   position: relative;
   min-height: 100px;
+  transition: var(--transition);
 }
 
 pre {
@@ -177,14 +235,15 @@ pre {
   white-space: pre-wrap;
   word-break: break-word;
   padding-right: 2rem;
+  color: var(--text-color);
 }
 
 .btn-copy {
   position: absolute;
   top: 0.5rem;
   right: 0.5rem;
-  background: white;
-  border: 1px solid #ddd;
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
   border-radius: 50%;
   width: 2rem;
   height: 2rem;
@@ -193,6 +252,7 @@ pre {
   justify-content: center;
   cursor: pointer;
   transition: var(--transition);
+  color: var(--text-color);
 }
 
 .btn-copy:hover {
@@ -203,15 +263,17 @@ pre {
 footer {
   text-align: center;
   padding: 1.5rem;
-  background-color: white;
-  color: #777;
-  font-size: 0.9rem;
-  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+  background-color: var(--header-bg);
+  color: var(--text-color);
+  opacity: 0.8;
+  transition: var(--transition);
 }
 
 @media (max-width: 768px) {
   header {
     padding: 1rem;
+    flex-direction: column;
+    gap: 0.5rem;
   }
   
   .logo i {
@@ -237,4 +299,47 @@ footer {
   .result-section {
     padding: 1rem;
   }
+  
+  textarea {
+    height: 120px;
+  }
+}
+
+@media (max-width: 480px) {
+  .logo {
+    justify-content: center;
+  }
+  
+  h1 {
+    font-size: 1.3rem;
+  }
+  
+  h2 {
+    font-size: 1.2rem;
+  }
+  
+  .card {
+    border-radius: var(--border-radius);
+    margin: 0 -0.5rem;
+  }
+  
+  .btn-primary {
+    padding: 0.7rem;
+  }
+  
+  .result-box {
+    padding: 0.8rem;
+  }
+  
+  pre {
+    font-size: 0.9rem;
+  }
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
 }
