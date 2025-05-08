@@ -1,7 +1,7 @@
 const alphabet = "abcdefghijklmnopqrstuvwxyz";
 const alphabetUpper = alphabet.toUpperCase();
 const numbers = "0123456789";
-const special = ".()!?,";
+const special = ".()!?,/";
 const spacing = "\t\n\r ";
 const all = alphabet + alphabetUpper + numbers + special + spacing;
 const charCodes = all.split("").map((c) => c.charCodeAt(0));
