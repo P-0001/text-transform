@@ -1,17 +1,17 @@
 {
   "name": "text-transform-site",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "main": "app.js",
   "type": "module",
   "scripts": {
-    "start": "node app.js",
+    "start": "node app.js NODE_ENV=production",
     "pretty": "npx prettier --config .prettier.cjs --write app.js src/*.js",
-    "dev": "npx nodemon app.js"
+    "dev": "npx nodemon app.js --ext js,ejs,css NODE_ENV=development"
   },
   "dependencies": {
-    "express": "^5.1.0",
+    "body-parser": "^2.2.0",
     "ejs": "^3.1.10",
-    "body-parser": "^2.2.0"
+    "express": "^5.1.0"
   },
   "devDependencies": {
     "nodemon": "^3.1.10",

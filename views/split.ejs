@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text Splitter - Text Transformer</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+    <header>
+        <div class="logo">
+            <i class="fas fa-cut"></i>
+            <h1>Text Splitter</h1>
+        </div>
+        <div class="header-right">
+            <nav>
+                <a href="/" class="nav-link">
+                    <i class="fas fa-text-height"></i> Transform
+                </a>
+                <a href="/split" class="nav-link active">
+                    <i class="fas fa-cut"></i> Split
+                </a>
+            </nav>
+            <div class="theme-toggle">
+                <button id="darkModeToggle" class="btn-theme" title="Toggle dark mode">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="card">
+            <div class="card-header">
+                <h2>Split Your Text</h2>
+                <p class="subtitle">Enter your text and specify how many words per chunk</p>
+            </div>
+
+            <form action="/split" method="POST">
+                <div class="form-group">
+                    <label for="inputText">Your Text</label>
+                    <textarea id="inputText" name="inputText" placeholder="Enter your text here..." required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="wordsPerChunk">Words per Chunk</label>
+                    <input type="number" id="wordsPerChunk" name="wordsPerChunk" min="1" value="200" required>
+                </div>
+
+                <button type="submit" class="btn-primary">
+                    <i class="fas fa-cut"></i> Split Text
+                </button>
+            </form>
+
+            <% if (chunks && chunks.length> 0) { %>
+                <div class="result-section">
+                    <h3>Result (<%= chunks.length %> chunks):</h3>
+                    <div class="chunks-container">
+                        <% chunks.forEach((chunk, index)=> { %>
+                            <div class="chunk-box">
+                                <div class="chunk-header">
+                                    <span class="chunk-number">Chunk <%= index + 1 %></span>
+                                    <button class="btn-copy" data-chunk="<%= index %>" title="Copy to clipboard">
+                                        <i class="fas fa-copy"></i>
+                                    </button>
+                                </div>
+                                <div class="chunk-content">
+                                    <pre><%= chunk %></pre>
+                                </div>
+                            </div>
+                            <% }); %>
+                    </div>
+                </div>
+                <% } %>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; <%= new Date().getFullYear() %> Text Transformer. All rights reserved.</p>
+        <p>Created by <a style="color: var(--primary-color);" href="https://github.com/P-0001">P-0001</a></p>
+        <p>Version: <%= version %>
+        </p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // save last input
+            const lastInput = localStorage.getItem('lastSplitInput');
+            if (lastInput) {
+                document.getElementById('inputText').value = lastInput;
+            }
+
+            // save last words per chunk
+            const lastWordsPerChunk = localStorage.getItem('lastWordsPerChunk');
+            if (lastWordsPerChunk) {
+                document.getElementById('wordsPerChunk').value = lastWordsPerChunk;
+            }
+
+            // save input on form submit
+            const form = document.querySelector('form');
+            if (form) {
+                form.addEventListener('submit', function () {
+                    const inputText = document.getElementById('inputText').value;
+                    const wordsPerChunk = document.getElementById('wordsPerChunk').value;
+                    localStorage.setItem('lastSplitInput', inputText);
+                    localStorage.setItem('lastWordsPerChunk', wordsPerChunk);
+                });
+            }
+
+            // Copy button functionality for each chunk
+            document.querySelectorAll('.btn-copy').forEach(button => {
+                button.addEventListener('click', function () {
+                    const chunkIndex = this.getAttribute('data-chunk');
+                    const chunkContent = document.querySelector(`.chunk-box:nth-child(${parseInt(chunkIndex) + 1}) .chunk-content pre`).textContent;
+
+                    navigator.clipboard.writeText(chunkContent)
+                        .then(() => {
+                            this.innerHTML = '<i class="fas fa-check"></i>';
+                            setTimeout(() => {
+                                this.innerHTML = '<i class="fas fa-copy"></i>';
+                            }, 2000);
+                        })
+                        .catch(err => {
+                            console.error('Failed to copy text: ', err);
+                        });
+                });
+            });
+
+            // Dark mode functionality
+            const darkModeToggle = document.getElementById('darkModeToggle');
+            const htmlElement = document.documentElement;
+
+            // Check for saved theme preference
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark') {
+                htmlElement.classList.add('dark-mode');
+                darkModeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+            }
+
+            // Toggle dark mode
+            darkModeToggle.addEventListener('click', function () {
+                htmlElement.classList.toggle('dark-mode');
+
+                // Update button icon
+                if (htmlElement.classList.contains('dark-mode')) {
+                    darkModeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+                    localStorage.setItem('theme', 'dark');
+                } else {
+                    darkModeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+                    localStorage.setItem('theme', 'light');
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

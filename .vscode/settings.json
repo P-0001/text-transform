@@ -1,0 +1,9 @@
+{
+    "cSpell.words": [],
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "prettier.configPath": ".prettier.cjs",
+    "search.exclude": {
+        "**/node_modules": true
+    }
+}

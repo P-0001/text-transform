@@ -1,4 +1,4 @@
-import { unique, ALLOWED_CHARS } from "./utils.js";
+import { unique, ALLOWED_CHARS } from './utils.js'
 
 /**
  *
@@ -6,26 +6,19 @@ import { unique, ALLOWED_CHARS } from "./utils.js";
  * @returns {Object} { result: string }
  */
 export function cleanText(input) {
-  const chars = input.split("").map((c) => c.charCodeAt(0));
-
-  console.log({
-    inputText: unique(chars).length,
-    allowed: ALLOWED_CHARS.length,
-  });
-
   // Step 1: Replace and  Normalize and remove diacritics (accents, etc.)
   let output = input
-    .replace(/\-/g, " ")
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "");
+    .replace(/\-/g, ' ')
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
 
   // Step 4: Replace any remaining specials with null
   const result = output
-    .split("")
-    .filter((c) => ALLOWED_CHARS.includes(c.charCodeAt(0)))
-    .join("");
+    .split('')
+    .filter(c => ALLOWED_CHARS.includes(c.charCodeAt(0)))
+    .join('')
 
-  return { result };
+  return { result }
 }
 
-export default cleanText;
+export default cleanText

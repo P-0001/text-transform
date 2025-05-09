@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,32 +8,43 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <link rel="stylesheet" href="/style.css">
 </head>
+
 <body>
   <header>
     <div class="logo">
       <i class="fas fa-text-height"></i>
       <h1>Text Transformer</h1>
     </div>
-    <div class="theme-toggle">
-      <button id="darkModeToggle" class="btn-theme" title="Toggle dark mode">
-        <i class="fas fa-moon"></i>
-      </button>
+    <div class="header-right">
+      <nav>
+        <a href="/" class="nav-link active">
+          <i class="fas fa-text-height"></i> Transform
+        </a>
+        <a href="/split" class="nav-link">
+          <i class="fas fa-cut"></i> Split
+        </a>
+      </nav>
+      <div class="theme-toggle">
+        <button id="darkModeToggle" class="btn-theme" title="Toggle dark mode">
+          <i class="fas fa-moon"></i>
+        </button>
+      </div>
     </div>
   </header>
-  
+
   <main class="container">
     <div class="card">
       <div class="card-header">
         <h2>Transform Your Text</h2>
         <p class="subtitle">Enter your text below and transform it instantly</p>
       </div>
-      
+
       <form action="/transform" method="POST">
         <div class="form-group">
           <label for="inputText">Your Text</label>
           <textarea id="inputText" name="inputText" placeholder="Enter your text here..." required></textarea>
         </div>
-        
+
         <!--
         <div class="form-group">
           <label for="transformType">Transform Type</label>
@@ -43,65 +55,44 @@
           </select>
         </div>
         -->
-        
+
         <button type="submit" class="btn-primary">
           <i class="fas fa-magic"></i> Transform
         </button>
       </form>
 
-      <% if (output !== null) { %>
+      <% if (output !==null) { %>
         <div class="result-section">
           <h3>Result:</h3>
           <div class="result-box">
-            <pre><%= output %></pre>
+            <pre>
+              <%= output %>
+            </pre>
             <button class="btn-copy" id="copyButton" title="Copy to clipboard">
               <i class="fas fa-copy"></i>
             </button>
           </div>
         </div>
-      <% } %>
+        <% } %>
     </div>
   </main>
-  
+
   <footer>
     <p>&copy; <%= new Date().getFullYear() %> Text Transformer. All rights reserved.</p>
     <p>Created by <a style="color: var(--primary-color);" href="https://github.com/P-0001">P-0001</a></p>
-    
-    <p>Version: <%= version %></p>
+
+    <p>Version: <%= version %>
+    </p>
 
   </footer>
 
   <script>
-    document.addEventListener('DOMContentLoaded', function() {
-
-      // save last input
-      const lastInput = localStorage.getItem('lastInput');
-      if (lastInput) {
-        document.getElementById('inputText').value = lastInput;
-      }
-
-      // save last output
-      const lastOutput = localStorage.getItem('lastOutput');
-      if (lastOutput) {
-        document.getElementById('outputText').value = lastOutput;
-      }
-
-
-      // save input and output on form submit
-      const form = document.querySelector('form');
-      if (form) {
-        form.addEventListener('submit', function() {
-          const inputText = document.getElementById('inputText').value;
-          const outputText = document.getElementById('outputText').value;
-          localStorage.setItem('lastInput', inputText);
-          localStorage.setItem('lastOutput', outputText);
-        });
-      }
+    document.addEventListener('DOMContentLoaded', function () {
 
       // Copy button functionality
       const copyButton = document.getElementById('copyButton');
       if (copyButton) {
-        copyButton.addEventListener('click', function() {
+        copyButton.addEventListener('click', function () {
           const resultText = document.querySelector('.result-box pre').textContent;
           navigator.clipboard.writeText(resultText)
             .then(() => {
@@ -115,22 +106,22 @@
             });
         });
       }
-      
+
       // Dark mode functionality
       const darkModeToggle = document.getElementById('darkModeToggle');
       const htmlElement = document.documentElement;
-      
+
       // Check for saved theme preference
       const savedTheme = localStorage.getItem('theme');
       if (savedTheme === 'dark') {
         htmlElement.classList.add('dark-mode');
         darkModeToggle.innerHTML = '<i class="fas fa-sun"></i>';
       }
-      
+
       // Toggle dark mode
-      darkModeToggle.addEventListener('click', function() {
+      darkModeToggle.addEventListener('click', function () {
         htmlElement.classList.toggle('dark-mode');
-        
+
         // Update button icon
         if (htmlElement.classList.contains('dark-mode')) {
           darkModeToggle.innerHTML = '<i class="fas fa-sun"></i>';
@@ -143,4 +134,5 @@
     });
   </script>
 </body>
+
 </html>
