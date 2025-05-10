@@ -36,6 +36,11 @@ app.use(express.static(path.join(__dirname, 'public')))
 app.set('view engine', 'ejs')
 app.set('views', path.join(__dirname, 'views'))
 
+app.get('/ping', (req, res) => {
+  res.setHeader('x-version', version)
+  res.status(200).send('pong')
+})
+
 app.get('/', (req, res) => {
   res.render('index', { output: null, version })
 })
