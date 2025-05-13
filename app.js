@@ -45,6 +45,10 @@ app.get('/', (req, res) => {
   res.render('index', { output: null, version })
 })
 
+app.get('/capture', (req, res) => {
+  res.render('capture', {  })
+})
+
 app.get('/split', (req, res) => {
   res.render('split', { chunks: [], version })
 })
@@ -82,6 +86,8 @@ app.post('/api/transform', async (req, res) => {
 
   res.json(result)
 })
+
+
 
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`)
