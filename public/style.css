@@ -189,7 +189,7 @@ label {
   color: var(--text);
   margin-bottom: 0.2rem;
 }
-textarea, input[type="number"] {
+textarea, input[type="number"], input[type="url"] {
   background: var(--bg-light);
   color: var(--text);
   border: 1.5px solid var(--border);
@@ -201,13 +201,13 @@ textarea, input[type="number"] {
   margin-bottom: 0.2rem;
   resize: vertical;
 }
-textarea:focus, input[type="number"]:focus {
+textarea:focus, input[type="number"]:focus, input[type="url"]:focus {
   outline: none;
   border-color: var(--primary);
   box-shadow: 0 0 0 2px var(--primary);
   background: #232b36;
 }
-textarea::placeholder {
+textarea::placeholder, input[type="url"]::placeholder {
   color: var(--text-muted);
   opacity: 1;
   font-style: italic;
@@ -412,4 +412,8 @@ footer {
   .chunk-content {
     padding: 0.7rem;
   }
+}
+.full-width {
+  width: 100%;
+  box-sizing: border-box;
 }

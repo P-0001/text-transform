@@ -6,6 +6,7 @@ import cleanText from './src/fix.js'
 import splitText from './src/split.js'
 import { readFileSync } from 'node:fs'
 import { timed } from './src/utils.js'
+import { YoutubeTranscript } from 'youtube-transcript'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const PORT = process.env.PORT || 3000
@@ -46,11 +47,15 @@ app.get('/', (req, res) => {
 })
 
 app.get('/capture', (req, res) => {
-  res.render('capture', {  })
+  res.render('capture', { version })
 })
 
 app.get('/split', (req, res) => {
   res.render('split', { chunks: [], version })
+})
+
+app.get('/youtube', (req, res) => {
+  res.render('youtube', { transcript: null, error: null, version })
 })
 
 app.post('/transform', (req, res) => {
@@ -87,7 +92,34 @@ app.post('/api/transform', async (req, res) => {
   res.json(result)
 })
 
+app.post('/youtube', async (req, res) => {
+  const { videoUrl } = req.body
+  let transcript = null
+  let error = null
 
+  try {
+    // Extract video ID from URL
+    const videoId = videoUrl.match(
+      /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/
+    )?.[1]
+
+    if (!videoId) {
+      throw new Error('Invalid YouTube URL')
+    }
+
+    const transcriptItems = await YoutubeTranscript.fetchTranscript(videoId)
+    transcript = transcriptItems.map(item => item.text).join(' ')
+
+    // &amp;#39; === '
+    const regex = new RegExp('&amp;#39;', 'g')
+    transcript = transcript.replace(regex, "'")
+  } catch (err) {
+    error = err.message
+    console.error('Error fetching transcript:', err)
+  }
+
+  res.render('youtube', { transcript, error, version })
+})
 
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`)
